@@ -8,9 +8,9 @@ class Students:
 
     def __init__(self):
         self.students = []
-        self.full_path = os.path.expanduser('~/Desktop/Insight Workshop/Assignments/Python/Python Assignment III/IT Academy/Records/Students.csv')
+        self.path = os.path.dirname(os.path.abspath(__file__))
         
-        with open(self.full_path, 'r') as csvfile: 
+        with open(self.path + '/Records/Students.csv', 'r') as csvfile: 
 
             csvreader = csv.reader(csvfile) 
             self.header = next(csvreader) 
@@ -34,32 +34,30 @@ class Students:
         else:
             self.displaystudentinfo(studentId)
 
-            print('What would you like to do?')
+            print('What would you like to do?\n')
+            print('1. Go to main menu')
             if student[7] == '0':
-                print(f'\n1. {"Mark the course as complete" if int(student[5]) == 20000 else "Pay remaining installment"} \n2. Leave the program')
+                print('2. Leave the program')
+                if int(student[5]) == 10000:
+                    print('3. Pay remaining installment \n')                
             
-            print('3. Go to main menu \n')
-            
-            studentChoice = input('Your choice: ')
+            studentChoice = input('\nYour choice: ')
 
-            while studentChoice not in ['1', '2', '3', '4']:
-                studentChoice = input('Invalid option. Please choose between the available options: ')
-
-            if studentChoice == '1':
-                studentIndex = self.students.index(student)
-                if int(student[5]) == 20000:
-                    self.students[studentIndex][5] = 0
-                    self.students[studentIndex][6] = 20000
-                    self.students[studentIndex][7] = 1
-                    
+            if student[7] == '0':
+                if int(student[5]) == 10000:
+                    while studentChoice not in ['1', '2', '3']:
+                        studentChoice = input('Invalid option. Please choose between the available options: ')
                 else:
-                    self.students[studentIndex][5] = 20000
-                    self.students[studentIndex][6] = 0
+                    while studentChoice not in ['1', '2']:
+                        studentChoice = input('Invalid option. Please choose between the available options: ')
+            else: 
+                while studentChoice != '1':
+                    studentChoice = input('Invalid option. Please choose between the available options: ')
 
-                dbcontext.CsvFunctions().writer(self.header,self.students,self.full_path)
-
-                print('\nYour data has been updated!\n')
-                self.main(studentId)
+            
+            if studentChoice == '1':
+                print('\n')
+                academy.Academy().main()
             elif studentChoice == '2':
                 confirmChoice = input("\nIf you leave the program, your deposit won't be refunded. Do you want to continue? ('Y' - yes/'N' - no): ")
 
@@ -69,14 +67,29 @@ class Students:
                 if confirmChoice == 'Y':
                     studentIndex = self.students.index(student)
                     _ = self.students.pop(studentIndex)
-                    dbcontext.CsvFunctions().writer(self.header,self.students,self.full_path)
+                    dbcontext.CsvFunctions().writer(self.header,self.students,self.path + '/Records/Students.csv')
                     print('\nYou have left the program. :( We hope to see you with us soon!\n')
                     academy.Academy().main()
                 else:
                     self.main(studentId)
-            elif studentChoice == '3':
-                print('\n')
-                academy.Academy().main()
+            else:
+                studentIndex = self.students.index(student)
+                self.students[studentIndex][5] = 20000
+                self.students[studentIndex][6] = 0
+
+                dbcontext.CsvFunctions().writer(self.header,self.students,self.path + '/Records/Students.csv')
+
+                print('\nYour data has been updated!\n')
+                self.main(studentId)
+
+
+    def graduatestudents(self):
+        for student in self.students:
+            student[6] = int(student[6]) + int(student[5])
+            student[5] = 0
+            student[7] = 1
+
+        dbcontext.CsvFunctions().writer(self.header,self.students,self.path + '/Records/Students.csv')
 
 
     def getstudentinfo(self,studentid):
@@ -115,7 +128,7 @@ class Students:
 
         if enrollConfirm == 1:
             self.students.append([self.generatestudentid(), studentName, age, gender, courseCode, amount, 0 if amount == 20000 else 10000, '0'])
-            dbcontext.CsvFunctions().writer(self.header,self.students,self.full_path)
+            dbcontext.CsvFunctions().writer(self.header,self.students,self.path + '/Records/Students.csv')
             print(f'\nCongratulations! You have been enrolled! Your ID is {self.students[-1][0]}. You can use this ID to view your information from the main menu. \n')
             
             enrollCompleted = input('Press 1 and Enter to go to main menu: ')

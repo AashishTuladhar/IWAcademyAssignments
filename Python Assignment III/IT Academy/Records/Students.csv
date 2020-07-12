@@ -1,3 +1,5 @@
 StudentID,StudentName,Age,Gender,Course,Deposit,Balance,IsCourseComplete
 S001,Aashish Tuladhar,24,M,C001,0,20000,1
-S002,Nikhil Bajracharya,27,M,C002,20000,0,0
+S002,Nikhil Bajracharya,27,M,C002,0,20000,1
+S003,Aman Shrestha,25,M,C001,0,20000,1
+S004,Naina Shrestha,24,F,C004,0,20000,1

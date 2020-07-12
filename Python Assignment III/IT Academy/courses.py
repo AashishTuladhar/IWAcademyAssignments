@@ -6,9 +6,9 @@ class Courses():
 
     def __init__(self):
         self.courses = []
-        full_path = os.path.expanduser('~/Desktop/Insight Workshop/Assignments/Python/Python Assignment III/IT Academy/Records/Courses.csv')
+        path = os.path.dirname(os.path.abspath(__file__))
         
-        with open(full_path, 'r') as csvfile: 
+        with open(path + '/Records/Courses.csv', 'r') as csvfile: 
 
             csvreader = csv.reader(csvfile) 
             _ = next(csvreader) 
