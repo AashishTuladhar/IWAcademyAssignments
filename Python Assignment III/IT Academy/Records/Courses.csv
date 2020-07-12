@@ -1,7 +1,7 @@
 CourseID,CourseName,DurationInMonths,TimeInHours
 C001,Python,2,2
 C002,C#,2,2
-C003,JavaScript,3,1
+C003,JavaScript,2,1
 C004,Swift,2,1
 C005,Kotlin,2,1
 C006,SQL,2,1

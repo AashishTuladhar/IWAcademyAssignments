@@ -24,12 +24,11 @@ class Academy:
             while endProgram not in ['Y', 'N']:
                 endProgram = input("Please enter either 'Y' for yes or 'N' for no: ")
             if endProgram == 'Y':
-                self.endprogram()
+                academyStudents.Students().graduatestudents()
+                print('The program has been marked complete successfully.')
             else:
                 self.main()
         elif menuIndex == '5':
             print('We look forward to your visit again!')
         
-    
-    def endprogram(self):
-        academyStudents.Students().graduatestudents()
+        
